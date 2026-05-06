@@ -1,0 +1,54 @@
+//brute force - recursion o(numrow^2)
+class Solution {
+public:
+vector<int>tempReturn(vector<int>&v){
+    int n = v.size();
+    int tempSize = n+1;
+    vector<int>temp(tempSize,1);
+    int i = 1 ;
+    int j = 0 ;
+    while(i < tempSize-1 && j <  n-1){
+        temp[i] = v[j]+v[j+1];
+        i++;
+        j++;
+    }
+   return temp ; 
+}
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>>ans;
+        if(numRows==0) return ans ;
+        vector<int>row = {1} ;
+        ans.push_back(row);
+        
+        for(int i = 1; i < numRows; i++){
+            row = tempReturn(row);
+            ans.push_back(row);
+        
+        }
+        return ans ;
+    }
+};
+
+//optimized - iterative approach pattern combinators + running formula row-1Ccol-1
+class Solution {
+public:
+vector<int>findRow(int row){
+    int ans = 1 ;
+    vector<int>ansRow;
+    ansRow.push_back(1);
+    for(int col  = 1 ; col < row ; col++  ){
+        ans = ans * (row-col);
+        ans = ans/col;
+        ansRow.push_back(ans);
+    }
+    return ansRow;
+}
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>>ans ; 
+        for(int i  = 1 ; i  <= numRows ; i++){
+            vector<int>nthRow = findRow(i);
+            ans.push_back(nthRow);
+        }
+        return ans;
+    }
+};
