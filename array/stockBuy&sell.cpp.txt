@@ -1,0 +1,15 @@
+// track min price & max profit 
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int profit = INT_MIN;
+        int buyPrice = prices[0];
+        for(int i = 1 ; i < prices.size() ; i++){
+            int cost = prices[i]- buyPrice;
+            profit = max(cost,profit);
+            buyPrice = min(buyPrice,prices[i]);
+        }
+        if(profit < 0) return 0;
+        return profit;
+    }
+};
