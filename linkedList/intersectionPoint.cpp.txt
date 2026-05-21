@@ -1,0 +1,83 @@
+//2approaches 
+// 2 pointer length differnce alignment
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        //size based approach 
+        int s1  = 0 ;
+        int s2 = 0 ;
+        ListNode * temp1 = headA;
+        ListNode * temp2 = headB ;
+        while(temp1){ 
+         s1++;
+         temp1 = temp1->next;
+         }
+        while(temp2){ 
+            s2++ ;
+         temp2 = temp2->next;
+         }
+        temp1 = headA ;
+        temp2 = headB ;
+        int diff = abs(s1-s2);
+        if(s1 > s2){
+            for(int i = 0 ;i < diff ; i++){
+                temp1 = temp1->next ;
+            }
+        }  
+        else{
+            for(int i= 0 ; i < diff ; i++){
+                temp2 = temp2->next ;  
+            }
+        } 
+     //   now that both pointers have equal paths to traverse 
+     while(temp1 != nullptr){
+        if(temp1 == temp2){
+            return temp1;
+        }
+        else{
+            temp1 = temp1->next;
+            temp2 = temp2->next;
+        }
+     }
+     return nullptr;    
+    }
+};
+
+
+//2 pointer + head shift
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode * temp1 = headA;
+        ListNode * temp2 = headB ;
+        while(temp1 != temp2){
+            temp1 =temp1->next ;
+            temp2 = temp2->next ;
+            if(temp1 == temp2)return temp1;
+            if(temp1 == nullptr){
+                temp1 = headB;
+            }
+            if(temp2 == nullptr){
+                temp2 = headA;
+            }
+
+        }
+       return temp1 ; 
+    }
+};
