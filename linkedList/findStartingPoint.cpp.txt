@@ -1,0 +1,56 @@
+//approach 1 - mapping 
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        unordered_map<ListNode*,int>seen ;
+        ListNode* curr = head ;
+        while(curr != NULL){
+            if(seen.find(curr) != seen.end()){
+                return curr ;
+            }
+            seen[curr]= 1 ;
+            curr=curr->next;
+        }
+        return nullptr ;
+    }
+};
+
+
+// optimised tortoise and hare 
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode * slow = head ;
+        ListNode * fast = head ;
+        //1) detect a loop
+        while(fast != nullptr && fast->next != nullptr){
+            slow  = slow->next ;
+            fast =  fast->next->next ;
+            if(slow == fast){
+                slow= head;
+                while(slow != fast){
+                   slow = slow->next ;
+                   fast = fast->next ;
+                }
+                return fast ;
+            }
+        }
+        return nullptr;
+    }
+};
