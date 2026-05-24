@@ -1,0 +1,54 @@
+//find kth node remember to store currhead , as head becomes tail , also store tail as prev
+class Solution {
+public:
+ListNode * findkNode(ListNode* temp , int k){
+    ListNode* curr = temp ; 
+    k--;
+    while(k != 0 && curr != nullptr){
+        curr = curr->next ;
+        k--;
+    }
+    return curr;
+}
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode * prev = nullptr ;
+        ListNode * temp = head ;
+        ListNode * next = nullptr ;
+        while(temp != nullptr){
+            ListNode * kthNode = findkNode(temp , k);
+            //less than k nodes left
+            if(kthNode == nullptr){
+               if(prev) {
+                prev->next = temp ;
+               }
+               break;
+            }
+            //store the rest of the list
+            next = kthNode->next ;
+            //seperate kth group
+            kthNode ->next =nullptr ;
+            //save current head 
+            ListNode * currhead  = temp ;
+            //reversal of kth grp
+            ListNode * back = nullptr ;
+           while(temp != nullptr){
+                ListNode* forw = temp->next ;
+                temp->next = back ;
+                back = temp ;
+                temp = forw;
+            }
+                // check if 1st group 
+                if(currhead == head){
+                    head = kthNode ;
+                }
+                else{
+                    prev->next = kthNode ;
+                }
+                //connect the prev grp to newly reversed grp
+                prev = currhead ;
+                //move temp forward  
+                temp = next;
+        }
+        return head; 
+    }
+};
