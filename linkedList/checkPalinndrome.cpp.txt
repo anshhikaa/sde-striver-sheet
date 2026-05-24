@@ -1,0 +1,45 @@
+//combination of find mid then reverse then check
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode*reversell(ListNode*curr){
+        ListNode * prev = nullptr ;
+        while(curr != nullptr){
+            ListNode * forw = curr->next ;
+            curr->next  = prev ;
+            prev = curr ;
+            curr = forw ;
+        }
+        return prev;
+    }
+    bool isPalindrome(ListNode* head) {
+        //find mid 
+        ListNode * fast = head ;
+        ListNode * slow = head ;
+    while(fast->next != nullptr && fast->next->next != nullptr){
+        fast = fast->next->next ;
+        slow = slow->next;
+    }
+    ListNode * secondhead = reversell(slow->next);
+    //compare 
+    ListNode * firsthead = head;
+    while(secondhead != nullptr){
+        if(firsthead->val != secondhead->val){
+            return false;
+        }
+        firsthead = firsthead->next ;
+        secondhead = secondhead->next;
+    }
+      reversell(secondhead);
+      return true;  
+    }
+};
