@@ -1,0 +1,41 @@
+//join linked list , tail = n-k th node and n-k->next = head 
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(head == nullptr || head->next == nullptr || k==0)return head;
+        //find length 
+        ListNode * temp = head ;
+        int length = 1 ;// temp is already at head
+        while(temp->next != nullptr){
+           length ++;
+           temp = temp->next;
+        }
+        //no. of actual rotations 
+        k = k % length ;
+        if(k == 0) return head;
+        temp->next = head ; 
+        int step = length-k; 
+        //find n-kth node - new tail
+        ListNode * newTail = head ;
+        step --;
+        while(step != 0 ){
+            newTail = newTail->next ;
+            step --;
+        }
+        //update new head 
+       ListNode* newHead = newTail->next;
+        //update new tail
+        newTail->next  = nullptr ;
+        return newHead;
+    }
+};
