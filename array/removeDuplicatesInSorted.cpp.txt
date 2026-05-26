@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        //two pointers 
+        int i = 0 ;
+        int j = i+1 ;
+       while(j < nums.size()){
+         //same j++;
+         if(nums[i] == nums[j]){
+            j++;
+         }
+         //different i++ swap j++;
+         else {
+            i++;
+            swap(nums[i],nums[j]);
+            j++;
+         }
+       }
+        return i+1 ;
+    }
+};
