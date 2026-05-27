@@ -1,0 +1,80 @@
+// calcualate preffix max and suffix max  , calc water stored for each height , sc= o(2n)
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        //calculate preffix max & suffix max
+        int n = height.size();
+        vector<int>preffixMax(n);
+        preffixMax[0] = height[0];
+        vector<int>suffixMax(n);
+        suffixMax[n-1] = height[n-1];
+        for(int i = 1 ; i <  n ; i++){
+            preffixMax[i] = max(height[i],preffixMax[i-1]);
+        }
+         for(int i = n-2 ; i >= 0 ; i--){
+            suffixMax[i] = max(height[i],suffixMax[i+1]);
+        }
+        //calculate water stored over the buildings 
+        int total = 0 ;
+        for(int i = 0  ; i < n; i++){
+            total += min(preffixMax[i],suffixMax[i]) - height[i];
+        }
+        return total ;
+    }
+};
+
+//reduces to sc to o(n) by remebering left max while calc total
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        //calculate preffix max & suffix max
+        int n = height.size();
+        vector<int>suffixMax(n);
+        suffixMax[n-1] = height[n-1];
+         for(int i = n-2 ; i >= 0 ; i--){
+            suffixMax[i] = max(height[i],suffixMax[i+1]);
+        }
+        //calculate water stored over the buildings 
+        int total = 0 ;
+        int leftMax = height[0];
+        for(int i = 0  ; i < n; i++){
+             leftMax  = max( leftMax , height[i]);
+            total += min(leftMax,suffixMax[i]) - height[i];
+        }
+        return total ;
+    }
+};
+
+//optimied two pointer 
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = height.size();
+        int lmax = 0 ;
+        int rmax = 0 ;
+        int total = 0 ;
+        int l = 0 ;
+        int r = n - 1;
+    while(l < r){
+        if(height[l] <= height[r]){
+            if(lmax > height[l]){
+                total += lmax-height[l];
+            }
+            else{
+                lmax = height[l];
+            }
+              l++;
+        }
+        else{
+            if(rmax > height[r]){
+                total += rmax-height[r];
+            }
+            else{
+                rmax = height[r];
+            }
+              r--;
+        }
+    }   
+      return total;     
+    }
+};
