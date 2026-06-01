@@ -1,0 +1,46 @@
+//brute = sort+set+recursion
+class Solution {
+public:
+    void generateAllSetRecursively(vector<int>& nums,vector<int>&curr,int i,set<vector<int>>&st){
+        //base case
+        if(i == nums.size()){
+            st.insert(curr);
+            return ;
+        }
+        //pick 
+    curr.push_back(nums[i]);
+    generateAllSetRecursively(nums,curr,i+1,st);
+    //not pick
+    curr.pop_back();
+    generateAllSetRecursively(nums,curr,i+1,st);         
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<int>curr = {} ;
+        set<vector<int>>st ;
+        sort(nums.begin(),nums.end());
+        generateAllSetRecursively(nums,curr,0,st);
+        vector<vector<int>>ans(st.begin(),st.end());
+        return ans ;
+    }
+};
+
+//optimized - checking for duplicates within the recursion call itself, sort array first 
+class Solution {
+public:
+    void generateAllSetRecursively(vector<int>& nums,vector<vector<int>>&ans, vector<int>&curr,int index ){
+    ans.push_back(curr);
+    for(int i = index ; i < nums.size(); i++){
+        if(i > index && nums[i] == nums[i-1])continue ;
+        curr.push_back(nums[i]);
+        generateAllSetRecursively(nums,ans,curr,i+1);
+        curr.pop_back();
+    }         
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<int>curr = {} ;
+        sort(nums.begin(),nums.end());
+        vector<vector<int>>ans ;
+        generateAllSetRecursively(nums,ans,curr,0);
+        return ans ;
+    }
+};
