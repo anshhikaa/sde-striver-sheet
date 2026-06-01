@@ -1,0 +1,50 @@
+//brute force - generate all subsets - bit manipulation  
+
+
+//recursive solution - bool return  
+class Solution {
+  public:
+  bool recursiveSum(vector<int>&arr, int sum , int i){
+      //base case
+      if(sum == 0 ){
+          return true ;
+      }
+      if(i == arr.size()){
+          return false;
+      }
+    
+      //pick
+      bool pick = false;
+      if(arr[i] <= sum){
+          pick =recursiveSum(arr,sum-arr[i],i+1);
+      }
+      //not pick 
+      bool notPick = recursiveSum(arr,sum,i+1);
+      
+      return pick || notPick;
+  }
+    bool isSubsetSum(vector<int>& arr, int sum) {
+        // code here
+        return recursiveSum(arr , sum , 0);
+    }
+};
+//return sum of all subsets
+class Solution {
+  public:
+  void recursiveSum(vector<int>&nums,vector<int>&ans,int currSum, int i){
+    if(i == nums.size()){
+      ans.push_back(currSum);
+      return ;
+    }
+    //pick 
+    recursiveSum(nums,ans,currSum+nums[i],i+1);
+    recursiveSum(nums,ans,currSum,i+1);
+  }
+    vector<int> subsetSums(vector<int>& nums) {
+        //your code goes here
+        vector<int>ans ;
+        recursiveSum(nums,ans,0, 0);
+        sort(ans.begin(),ans.end());
+        return ans ;
+    }
+};
