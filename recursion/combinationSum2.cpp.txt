@@ -1,0 +1,28 @@
+//similar logic as subset sum 2 to avoid duplicates
+class Solution {
+public:
+    void findCombinations(vector<int>& candidates, int target, int indx , vector<int>&comb , vector<vector<int>>&ans){
+        // base case 
+        if(target == 0){
+            ans.push_back(comb);
+            return ;
+        }
+        if(target < 0 || indx >= candidates.size()){
+            return ;
+        }
+        //for unique solutions only loop over the candidates and skip the elements already taken 
+        for(int i = indx ; i < candidates.size() ; i++){
+            if(i > indx && candidates[i] == candidates[i-1])continue; // skip duplicate elements
+            comb.push_back(candidates[i]);
+            findCombinations(candidates,target-candidates[i],i+1,comb,ans);
+            comb.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int>>ans ;
+        vector<int>comb ;
+        sort(candidates.begin(),candidates.end());
+        findCombinations(candidates,target,0 , comb,ans);
+        return ans ;
+    }
+};
