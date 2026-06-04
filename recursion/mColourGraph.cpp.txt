@@ -1,0 +1,36 @@
+class Solution {
+  public:
+    bool ifsafe(int node , vector<int>&color , vector<vector<int>>&adjmat, int Col , int v){
+        for(int k = 0 ; k < v ; k++){
+            if(k != node && adjmat[node][k] == 1 && color[k] == Col)return false;
+        } 
+      return true ; 
+    }
+    bool colourGraph(int v , int node , int m , vector<vector<int>>&adjmat,vector<int>&color){
+        //base case
+        if(node == v){
+            return true ;
+        }
+        for(int i = 1 ; i <= m ; i++){
+            if(ifsafe(node,color,adjmat,i,v)){
+                color[node]= i ;
+                if(colourGraph(v,node+1,m,adjmat,color))return true;
+                color[node] = 0 ; // backtrack 
+            } 
+        }
+        //if tried all colour none fits then return false ;
+        return false; 
+    }
+    bool graphColoring(int v, vector<vector<int>> &edges, int m) {
+        vector<vector<int>>adjmat(v,vector<int>(v,0));
+        for(int i = 0 ; i < edges.size(); i++){
+            int u = edges[i][0];
+            int v = edges[i][1];
+            adjmat[u][v]= 1;
+            adjmat[v][u] = 1;
+            }
+        vector<int>color(v,0);
+        bool ans = colourGraph(v , 0 , m , adjmat,color);
+        return ans ;    
+    }
+};
