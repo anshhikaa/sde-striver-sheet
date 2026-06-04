@@ -1,0 +1,93 @@
+//is safe function
+class Solution {
+public:
+    bool ifsafe(int row , int col , vector<string>&board , int n ){
+        int orignalRow = row ; 
+        int orignalCol = col ;
+        // left upper diagonal 
+        while(row >= 0 && col >=  0){
+            if(board[row][col]== 'Q') return false;
+            row--;
+            col--;
+        }
+        // left side straight row constant 
+        col = orignalCol;
+        row = orignalRow;
+        while(col >= 0){
+            if(board[row][col]== 'Q') return false;
+            col --;
+        }
+        //left lower diagonal
+        col = orignalCol;
+        row = orignalRow;
+        while( row < n && col >= 0 ){
+            if(board[row][col]== 'Q') return false;
+            row ++;
+            col --;
+        }
+        return true ;
+    }
+    void placeQueen(int n,int col , vector<string>&board,vector<vector<string>>&ans){
+       if(col == n ){
+        //ans reached 
+        ans.push_back(board);
+        return ;
+       }
+       //check if queen pos valid 
+       for(int row = 0 ; row < n ; row ++){
+        if(ifsafe(row,col,board,n)){
+           board[row][col]= 'Q';
+           placeQueen(n , col+1 ,board,ans);
+           board[row][col]= '.'; // backtracking
+        }
+       }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>>ans ;
+        vector<string>board(n);
+        string s(n,'.');
+        for(int i = 0 ; i < n ; i++){
+            board[i]= s ;
+        }
+        placeQueen(n , 0 , board , ans );
+        return ans ;
+    }
+};
+
+//check position use hashing 
+class Solution {
+public:
+    void placeQueen(int n,int col , vector<string>&board,vector<vector<string>>&ans,vector<int>&rowCheck,vector<int>&upperD,vector<int>&lowerD){
+       if(col == n ){
+        //ans reached 
+        ans.push_back(board);
+        return ;
+       }
+       //check if queen pos valid 
+       for(int row = 0 ; row < n ; row ++){
+        if(rowCheck[row] == 0 && upperD[n-1+col-row] == 0 && lowerD[row +col] == 0){
+           board[row][col]= 'Q';
+           rowCheck[row] = 1 ;
+           upperD[n-1+col-row] = 1 ;
+           lowerD[row +col] = 1;
+           placeQueen(n , col+1 ,board,ans, rowCheck, upperD, lowerD);
+           board[row][col]= '.'; // backtracking
+           rowCheck[row] = 0 ;
+           upperD[n-1+col-row] = 0 ;
+           lowerD[row +col] = 0;
+
+        }
+       }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>>ans ;
+        vector<string>board(n);
+        vector<int>rowCheck(n,0), upperD(2*n-1,0), lowerD(2*n-1,0);
+        string s(n,'.');
+        for(int i = 0 ; i < n ; i++){
+            board[i]= s ;
+        }
+        placeQueen(n , 0 , board , ans, rowCheck, upperD, lowerD );
+        return ans ;
+    }
+};
