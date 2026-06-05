@@ -1,0 +1,32 @@
+class Solution {
+  public:
+    void solve(vector<vector<int>>& maze,int row,int col , vector<vector<int>>&vis,vector<string>&ans,int n,string path){
+        //base case
+        if(row == n-1 && col == n-1){
+            ans.push_back(path);
+            return ;
+        }
+        //explore 4 direction
+        string dir = "DLRU";
+        int dr[] = {1, 0, 0, -1};
+        int dc[] = {0, -1, 1, 0};
+        for(int i  = 0 ; i < 4 ; i++){
+            int newR = row + dr[i];
+            int newC = col + dc[i];
+            if(newR < n && newR >= 0 && newC < n && newC >= 0 && maze[newR][newC] == 1 && !vis[newR][newC]){
+                vis[newR][newC] = 1 ;
+                solve(maze,newR,newC,vis,ans,n,path+dir[i]);
+                vis[newR][newC] = 0 ;//backtrack
+            }
+        }
+    }
+   
+    vector<string> ratInMaze(vector<vector<int>>& maze) {
+        vector<string>ans ;
+         int n = maze.size();
+        vector<vector<int>>vis(n,vector<int>(n,0));
+        vis[0][0] = 1 ;
+        if(maze[0][0] == 1) solve(maze,0,0,vis,ans,n,"");
+        return ans ;
+    }
+};
