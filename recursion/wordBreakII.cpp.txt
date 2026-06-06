@@ -1,0 +1,28 @@
+class Solution {
+public:
+    void solve(int indx , string path ,unordered_set<string>&dict, string &s,vector<string>&ans ){
+        if(indx == s.length()){
+            ans.push_back(path);
+            return ; 
+        }
+        for(int i = indx ; i < s.length() ; i++){
+            string word = s.substr(indx , i-indx+1);
+            //if substr found in dict then push it in path and recurse further on i+1
+            if(dict.find(word) != dict.end()){
+                //to remove last trailing space
+                if(i == s.length()-1){
+                    solve(i+1,path+word,dict ,s ,ans);
+                }
+                else{
+                solve(i+1,path + word + " ",dict,s,ans);
+                }
+            }
+        }
+    }
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string>dict(wordDict.begin(),wordDict.end());
+        vector<string>ans ;
+        solve(0 ,"", dict , s,ans );
+        return ans ;
+    }
+};
