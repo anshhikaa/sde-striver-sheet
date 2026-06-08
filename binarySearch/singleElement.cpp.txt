@@ -1,0 +1,33 @@
+//even,odd index of pairs before the single element else odd,even
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        int low = 1 ;
+        int high= nums.size()-2 ;
+        int n = nums.size()-1;
+        if (nums.size()== 1){
+            return nums[0];
+        }
+        //to eliminate extra conditional checks 
+        //check first and last elements here 
+        if(nums[0] != nums[1]) return nums[0];
+        if(nums[n] != nums[n-1])  return nums[n];
+        while(low <= high){
+        //all pairs before single element(even index  , odd index)
+           int mid = low + (high-low)/2 ;
+           if(nums[mid] != nums[mid+1] && nums[mid] != nums[mid-1]){
+            //single element 
+            return nums[mid];
+           }
+           //elimiation ->check mid index odd/even
+           if((mid % 2 == 1 && nums[mid] == nums[mid-1]) || (mid % 2 == 0 && nums[mid] == nums[mid+1])){//even odd eliminte left side
+               low = mid+1;
+           }
+           else{
+                high = mid-1;
+           }
+
+        }
+       return -1; 
+    }
+};
