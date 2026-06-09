@@ -1,33 +1,37 @@
 //binary search on the answer min to max-min 
 class Solution {
-public:
-    int singleNonDuplicate(vector<int>& nums) {
-        int low = 1 ;
-        int high= nums.size()-2 ;
-        int n = nums.size()-1;
-        if (nums.size()== 1){
-            return nums[0];
-        }
-        //to eliminate extra conditional checks 
-        //check first and last elements here 
-        if(nums[0] != nums[1]) return nums[0];
-        if(nums[n] != nums[n-1])  return nums[n];
-        while(low <= high){
-        //all pairs before single element(even index  , odd index)
-           int mid = low + (high-low)/2 ;
-           if(nums[mid] != nums[mid+1] && nums[mid] != nums[mid-1]){
-            //single element 
-            return nums[mid];
-           }
-           //elimiation ->check mid index odd/even
-           if((mid % 2 == 1 && nums[mid] == nums[mid-1]) || (mid % 2 == 0 && nums[mid] == nums[mid+1])){//even odd eliminte left side
-               low = mid+1;
-           }
-           else{
-                high = mid-1;
-           }
-
-        }
-       return -1; 
-    }
+	public:
+	bool canWePlace(int minDist, int cows, vector<int>&stalls) {
+		int last = stalls[0]; // first cow always placed at the beginning
+		int cowPlaced = 1 ;
+		for (int i = 1 ; i < stalls.size() ; i ++) {
+			if (stalls[i]-last >= minDist) {
+				cowPlaced ++;
+				last = stalls[i];
+			}
+		}
+		if (cows <= cowPlaced)return true ;
+		return false;
+	}
+	int aggressiveCows(vector<int> &stalls, int k) {
+		sort(stalls.begin(), stalls.end());
+		int n = stalls.size() - 1;
+		int l = 1;
+		int h = stalls[n];
+		while (l <= h) {
+			int mid = l + (h - l)/2 ;
+			if (canWePlace(mid, k, stalls) == true) {
+				// mid is smaller or equal to minDsit so explore larger values
+				// explore right
+				l = mid + 1;
+			}
+			else {
+				// mid is greater than minDist so explore smaller values
+				// explore left
+				h = mid - 1 ;
+				
+			}
+		}
+		return h;
+	}
 };
