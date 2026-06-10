@@ -1,0 +1,42 @@
+class Solution {
+  public:
+    bool allocationPossible(vector<int>&arr,int students , int maxPages){
+        int studentCount  = 1 ;
+        int pages = 0;
+        for(int i = 0 ; i < arr.size() ; i++){
+            if(arr[i] > maxPages) return false;
+            if(arr[i]+pages > maxPages){
+                studentCount++;
+                pages = arr[i] ;
+                
+            }
+            else{
+                pages+=arr[i];
+            }
+        }
+        if(studentCount > students) return false ;
+        return true ;
+    }
+    int findPages(vector<int> &arr, int k) {
+        if(k > arr.size()) return -1;
+        //define search space
+        int  l = 0;
+        int h = 0;
+        for(int i = 0 ; i < arr.size() ; i++){
+            l = max(l,arr[i]);
+            h += arr[i];
+        }
+        while(l <=  h){
+            int mid = l + (h-l)/2 ;
+            if(allocationPossible(arr,k,mid) == true){
+                //go left 
+                h = mid-1;
+            }
+            else{
+                l = mid+1;
+            }
+        }
+        
+      return l ;  
+    }
+};
