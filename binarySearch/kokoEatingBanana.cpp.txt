@@ -1,0 +1,37 @@
+class Solution {
+public:
+    bool validRate(int rate , int givenHours , vector<int>&piles){
+        //at this rate how many bananas can koko eat
+    long long totalHours = 0 ; //at this rate
+        for(int i = 0 ; i < piles.size() ; i++){
+            totalHours += (piles[i]+rate-1)/rate ;
+        }
+        if(totalHours > givenHours) return false ;
+        return true ;
+    }
+    int minEatingSpeed(vector<int>& piles, int h) {
+        //define search space 
+        //min 1
+        //max max of piles[i]
+        int l = 1 ;
+        int high = 0 ;
+        for(int i = 0 ; i< piles.size(); i++){
+            high = max(high,piles[i]) ;
+        }
+        int totalBananas = high ;
+        int ans =  0;
+        while( l <= high ){
+            int mid = l + (high-l)/2 ;
+            //if koko can eat all banas in h hours given her speed in k 
+            if(validRate(mid , h ,piles) == true){
+                //possibility of ans , further less rate find 
+                ans = mid ;
+                high = mid-1;
+            }
+            else{
+                l = mid+1;
+            }
+        }
+       return ans ; 
+    }
+};
