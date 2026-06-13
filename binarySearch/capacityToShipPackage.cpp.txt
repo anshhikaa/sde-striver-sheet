@@ -1,0 +1,41 @@
+class Solution {
+public:
+    bool validWeight(int maxWt , vector<int>&weights , int days){
+        //check if this maxWt is the wt that alllows all wits to get transfers within days 
+        int totalDays = 1 ;
+        int currWt =  0;
+       for(int i = 0 ; i < weights.size() ;i++){
+        if(weights[i] > maxWt) return false;
+        if(currWt + weights[i] > maxWt){
+            totalDays ++;
+            currWt = weights[i] ;
+        }
+        else{
+            currWt += weights[i];
+        }
+       }
+    return totalDays <= days;
+    }
+    int shipWithinDays(vector<int>& weights, int days) {
+       int n = weights.size();
+       int l = 0 ;
+       int h = 0 ;
+       for(int i = 0 ; i< n ; i++){
+         l = max(l,weights[i]); 
+         h += weights[i];
+       } 
+         int ans = 0 ;
+       while( l <= h ){
+         int mid = l+(h-l)/2 ;
+         //check if mid is valid asnwer 
+         if(validWeight(mid,weights,days) == true){
+            ans = mid ;
+            h = mid-1;
+         }
+         else{
+            l = mid+1;
+         }
+       }
+        return ans;
+    }
+};
