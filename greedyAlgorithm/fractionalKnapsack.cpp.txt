@@ -1,0 +1,30 @@
+//store val,wt together  compare and add val , fractional condition then find fraction*capacity for val 
+class Solution {
+  public:
+    double fractionalKnapsack(vector<int>& val, vector<int>& wt, int capacity) {
+         int n = val.size();
+        vector<pair<int,int>>ratio(n) ; //ratio , weight  (ratio = val/wt)
+        for(int i = 0 ; i < n ;i++){
+           ratio[i]= {val[i],wt[i]};
+        }
+        //descending sort
+        sort(ratio.begin(),ratio.end(),[](pair<int,int>&a, pair<int,int>&b){
+            return (double)a.first/a.second > (double)b.first/b.second;
+        });
+    double ans ; 
+    for(int i = 0 ; i < n ; i ++){
+        //compare weight 
+        if(capacity >= ratio[i].second){
+            capacity -= ratio[i].second ;
+            ans += ratio[i].first;
+        }
+        else{
+            //fractional-> capacity < weight[i] 
+            double frac = (double)ratio[i].first/(double)ratio[i].second * capacity ;
+            ans += frac ;
+            break;
+        }
+    }
+    return ans ;
+    }
+};
