@@ -1,0 +1,24 @@
+class Solution {
+  public:
+    int activitySelection(vector<int> &start, vector<int> &finish) {
+        int n= start.size();
+      vector<pair<pair<int,int>,int>>meetings(n);
+      for(int i = 0 ; i < n ; i++){
+          meetings[i]= {{start[i],finish[i]},i+1};
+      }
+        sort(meetings.begin(),meetings.end(),[](auto&a , auto &b){
+            return a.first.second<b.first.second;
+        });
+        int maxActivity = 1 ;
+        int freeTime = meetings[0].first.second ;
+        for(int i = 1 ; i < n; i++){
+            int startTime = meetings[i].first.first ;
+            if(freeTime < startTime){
+                maxActivity ++;
+                freeTime = meetings[i].first.second ;
+
+            }
+        }
+        return maxActivity;
+    }
+};
