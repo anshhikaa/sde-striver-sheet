@@ -1,0 +1,18 @@
+class Solution {
+  public:
+    int findMin(int n) {
+        int denominations[]= {10,5,2,1};
+        int coinCount= 0 ;
+        int i = 0 ;
+        while(n != 0 && i < 4){
+            if(n >= denominations[i]){
+                n = n-denominations[i];
+                coinCount++;
+            }
+            else{
+                i++;
+            }
+        }
+        return coinCount ;
+    }
+};
