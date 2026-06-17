@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int currGas = 0 ; 
+        int start = 0 ; 
+        int totalBalance = 0 ; // to ensure if start reaches end and didnt find valid solution
+        for(int i = 0 ; i < gas.size() ; i++){
+            currGas += gas[i];
+            int reqCost = cost[i];
+            totalBalance += gas[i]-cost[i];
+            if(reqCost > currGas){
+                start = i +1 ;
+                currGas = 0 ;
+            }
+            else{
+                currGas = currGas - reqCost ;
+            }
+        }
+        if(totalBalance < 0 )return -1;
+        return start ;
+    }
+};
