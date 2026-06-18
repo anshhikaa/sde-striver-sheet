@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char>st ;
+        for(char c : s){
+            //open bracket check
+            if(c == '{' || c == '(' || c == '['){
+                st.push(c);
+            }
+            //close bracket check prev matching opening pop the pair
+            else if( c == '}' && !st.empty() && st.top() == '{'){
+                st.pop();
+            }
+            else if( c == ')' && !st.empty() && st.top() == '('){
+                st.pop();
+            }
+            else if( c == ']' && !st.empty() && st.top() == '['){
+                st.pop();
+            }
+            else{
+                return false;
+            }
+        }
+        if(!st.empty())return false;
+       return true ; 
+    }
+};
