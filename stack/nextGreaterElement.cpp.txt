@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int>findNextGreater(vector<int>&nums){
+        stack<int>st ;
+        vector<int>ans(nums.size());
+        st.push(INT_MAX);
+        for(int i = nums.size()-1 ; i >= 0 ; i--){
+            while(!st.empty() && nums[i] > st.top()){
+                st.pop();
+                // here the elements would by popped until top is greater than element(nums[i])
+            }
+          ans[i] = (st.top() == INT_MAX ? -1 : st.top());
+          st.push(nums[i]);
+        }
+        return ans ;
+    }
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int,int>nextLarger ;
+        vector<int>nextL = findNextGreater(nums2);
+        for(int i = 0 ; i < nextL.size(); i++){
+            nextLarger[nums2[i]] = nextL[i];
+        }
+         vector<int>ans(nums1.size());
+         for(int i = 0 ; i < nums1.size(); i++){
+              ans[i] = nextLarger[nums1[i]];
+         }
+        return ans ;
+    }
+};
