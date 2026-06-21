@@ -1,0 +1,37 @@
+//keep surviving ones in the stack 
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        stack<int>st ;
+        for(auto a : asteroids){
+            bool destroyed = false;
+            //only enter loop is there is an -ve after positive 
+           while(!st.empty() && st.top()> 0 && a < 0){
+            //-ve destroys all smaller asteroids
+            if(abs(a) > st.top()){
+                st.pop();
+            }
+            //equal val then both destroyed 
+            else if(abs(a) == st.top()){
+                st.pop();
+                destroyed = true ;
+                break;
+            }
+            //if smaller -ve  then it would be destroyed
+            else{
+                destroyed = true ;
+                break;
+            }
+           } 
+        //if -ve after -ve or +ve after +ve , or any larger -ve after +ve(surviving asteroids) pushed into stack  
+          if(!destroyed)st.push(a);
+        }
+       vector<int>ans ;
+       while(!st.empty()){
+        ans.push_back(st.top());
+        st.pop();
+       }
+       reverse(ans.begin(),ans.end());
+        return ans ;
+    }
+};
