@@ -1,0 +1,39 @@
+//brute - o(n^2)
+class Solution {
+	public:
+	vector<int>slidingWindowMin(vector<int>&arr, int windowSize) {
+		vector<int>ans ;
+		deque<int>dq ;
+		for (int i = 0 ; i < arr.size() ; i++) {
+			int element = arr[i];
+			// maintain window size
+			if (!dq.empty() && dq.front() <= i - windowSize) {
+				dq.pop_front();
+			}
+			// maintain monotonic nature - >front = min ,then increasing order
+			while (!dq.empty() && element <= arr[dq.back()]) {
+				dq.pop_back();
+			}
+			dq.push_back(i);
+			if (i >= windowSize - 1) {
+				ans.push_back(arr[dq.front()]);
+			}
+		}
+		
+		return ans ;
+	}
+	vector<int> maxOfMins(vector<int>& arr) {
+		vector<int>ans(arr.size()) ;
+		for (int k = 1 ; k <= arr.size(); k++) {
+			vector<int>min = slidingWindowMin(arr, k);
+			int maxi = -1 ;
+			for (int i = 0; i < min.size(); i++) {
+				maxi = max(min[i], maxi);
+			}
+			ans[k - 1] = maxi;
+		}
+		return ans ;
+	}
+};
+
+//optimized - o(n)
