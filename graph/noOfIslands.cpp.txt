@@ -1,0 +1,38 @@
+class Solution {
+public:
+void bfs(int row , int col,vector<vector<char>>& grid,vector<vector<bool>>&vis,int n , int m){
+    queue<pair<int,int>>q ; //{row,col};
+    vis[row][col]= 1 ;
+    int delr[] = {-1,0,1,0};
+    int delc[] = {0,-1,0,1};
+    q.push({row,col});
+    while(!q.empty()){
+       int r = q.front().first;
+       int c = q.front().second ;
+        q.pop();
+        for(int i = 0 ; i < 4 ;i++){
+            int nr = r + delr[i];
+            int nc = c + delc[i];
+            if(nr >= 0 && nc >= 0 && nr < n && nc < m && !vis[nr][nc] && grid[nr][nc]== '1'){
+                vis[nr][nc]= 1;
+                q.push({nr,nc});
+            }
+        }
+    }
+}
+    int numIslands(vector<vector<char>>& grid) {
+        int n = grid.size();
+        int m= grid[0].size();
+        int count = 0 ;
+        vector<vector<bool>>vis(n,vector<bool>(m,0));
+        for(int i = 0 ; i < n ; i++){
+            for(int j =0 ; j < m ; j++){
+                if(grid[i][j]=='1' && !vis[i][j]){
+                    bfs(i,j,grid,vis,n,m);
+                    count ++;
+                }
+            }
+        }
+    return count;       
+    }
+};
