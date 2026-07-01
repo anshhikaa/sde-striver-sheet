@@ -1,0 +1,72 @@
+class LRUCache {
+public:
+class Node{
+    public:
+    int key ;
+    int val ;
+    Node* next ; 
+    Node* prev ;
+    Node(int _key , int _val){
+       key = _key;
+       val = _val ;
+    }
+};
+Node* head  = new Node(-1,-1);
+Node* tail = new Node(-1,-1);
+unordered_map<int,Node*>mapping ;
+int cap ;
+    LRUCache(int capacity) {
+    head->next = tail ;
+    tail->prev = head ;
+    cap = capacity ;    
+    }
+    void add(Node*newNode){
+        //add after head 
+        Node* temp = head->next ;
+        newNode->next = temp  ;
+        newNode->prev=  head ;
+        temp->prev=  newNode;
+        head->next = newNode;
+    }
+    void deleteNode(Node* delNode){
+        // remove from the tail 
+        Node* prevNode = delNode->prev;
+        Node* nextNode= delNode->next ;
+        nextNode->prev= prevNode ;
+        prevNode->next = nextNode;
+    }
+    int get(int key) {
+        if(mapping.find(key) != mapping.end()){
+            Node* resNode = mapping[key];
+            int res =resNode->val ;
+            mapping.erase(key);
+            deleteNode(resNode);
+            add(resNode);
+            mapping[key]= head->next ;
+            return res;
+        }
+    return -1 ;
+    }
+    
+    void put(int key, int value) {
+        if(mapping.find(key) != mapping.end()){
+           Node* existingnode = mapping[key];
+           mapping.erase(key);
+           deleteNode(existingnode);
+        }
+        if(mapping.size() == cap){
+            //remove least recenetly used at tail->prev 
+            mapping.erase(tail->prev->key);
+            deleteNode(tail->prev);
+        }
+        add(new Node(key,value));
+        mapping[key]= head->next;  
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
