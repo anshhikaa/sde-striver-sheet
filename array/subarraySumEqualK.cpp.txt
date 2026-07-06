@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        unordered_map<int,int>preffixSumCount ;
+        int preffixSum = 0 ;
+        int count = 0 ;
+        preffixSumCount[0]=1 ;
+        for(int i = 0 ; i < nums.size() ; i++){
+            preffixSum += nums[i];
+            if(preffixSumCount.find(preffixSum-k) != preffixSumCount.end()){
+                count += preffixSumCount[preffixSum-k];
+            }
+            preffixSumCount[preffixSum]++;
+        }
+        return count ;
+    }
+};
