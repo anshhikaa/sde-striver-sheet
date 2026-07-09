@@ -1,0 +1,39 @@
+class Solution {
+	public:
+	string minWindow(string& s1, string& s2) {
+		int left = 0 ;
+		int right = 0 ;
+		int s2ptr = 0 ;
+		int startingIndex = -1;
+		//right = 0, s2 = 0
+		int minLength = INT_MAX;
+		while (right < s1.length()) {
+			if (s1[right] == s2[s2ptr]) {
+				s2ptr++;
+			}
+			// found valid now find the most min subsequence backwards
+			if (s2ptr == s2.length()) {
+				int backptr = right;
+				s2ptr = s2.length()-1;
+				while (s2ptr >= 0 ) {
+					if (s1[backptr] == s2[s2ptr]) {
+						s2ptr--;
+					}
+					backptr--;
+				}
+				//backptr points towards one before actual starting
+				// found the min now starting to traverse from right next to left for overlapping subsequence
+				if(right-backptr < minLength){
+				    minLength = right-backptr;
+				    startingIndex = backptr+1;
+				}
+				s2ptr = 0 ;
+				left = backptr + 1 ;
+				right = backptr+1 ;
+			}
+			right++;
+		}
+		if (startingIndex == -1)return "";
+		return s1.substr(startingIndex, minLength) ;
+	}
+};
