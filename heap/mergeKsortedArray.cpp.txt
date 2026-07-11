@@ -1,0 +1,23 @@
+class Solution {
+  public:
+    vector<int> mergeArrays(vector<vector<int>> &mat) {
+        int n = mat.size();
+        int m = mat[0].size();
+        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>minHeap;
+        for(int i = 0 ; i < n ; i ++){
+            minHeap.push({mat[i][0],{i,0}});
+        }
+        vector<int>ans ;
+        while(!minHeap.empty()){
+           int num = minHeap.top().first;
+           auto[i,j]= minHeap.top().second;
+           minHeap.pop();
+           ans.push_back(num);
+           //push the next element to the one that is popped for that row
+           if(j+1 < m){
+               minHeap.push({mat[i][j+1],{i,j+1}});
+           }
+        }
+        return ans ;
+    }
+};
