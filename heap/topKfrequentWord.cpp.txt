@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        unordered_map<string,int>freq;
+        for(string s : words){
+            freq[s]++;
+        }
+        auto comp = [](const pair<int,string>&a,const pair<int,string>&b){
+            //if freq same . then lexically larger on top
+            if(a.first == b.first){
+                return a.second < b.second;
+            }
+            return a.first > b.first;
+        };
+        priority_queue<pair<int,string>,vector<pair<int,string>>,decltype(comp)>minHeap(comp);
+        vector<string>ans ;
+        for(auto it : freq){
+            minHeap.push({it.second,it.first});
+            if(minHeap.size()> k){
+                minHeap.pop();
+            }
+        }
+        while(!minHeap.empty()){
+            ans.push_back(minHeap.top().second);
+            minHeap.pop();
+        }
+        reverse(ans.begin(),ans.end());
+        return ans ;
+    }
+};
