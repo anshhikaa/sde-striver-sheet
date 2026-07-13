@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<int> smallestRange(vector<vector<int>>& nums) {
+       int k = nums.size();
+       int maxR = INT_MIN;
+       priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>minheap; // {element,{listIndex,colIndex}}
+       for(int i = 0 ; i < k ;i++ ){
+        maxR = max(maxR,nums[i][0]);
+        minheap.push({nums[i][0],{i,0}});
+       }
+       int bestRange  = INT_MAX;
+       int bestL = 0 ;
+       int bestR = 0 ;
+       while(!minheap.empty()){
+        int minL = minheap.top().first ;
+        auto [i,j]= minheap.top().second ;
+        minheap.pop();
+        if(maxR-minL < bestRange){
+            bestRange = maxR-minL;
+            bestL = minL;
+            bestR = maxR;
+        }
+        //next element - trying to minimize the range 
+        if(j+1 < nums[i].size()){
+            int nextElement = nums[i][j+1];
+            //update max 
+            if(nextElement > maxR){
+                maxR = nextElement;
+            }
+          minheap.push({nextElement,{i,j+1}});
+        }
+        else{
+            //j+1 out of range 
+            break ;
+        }
+       }
+       return{bestL,bestR}; 
+    }
+};
