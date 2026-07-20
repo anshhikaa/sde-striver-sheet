@@ -1,0 +1,40 @@
+/*
+Definition for Node
+class Node {
+	public:
+	int data;
+	Node* left;
+	Node* right;
+	
+	Node(int val) {
+		data = val;
+		left = right = nullptr;
+	}
+};
+*/
+
+class Solution {
+	public:
+	vector<int> bottomView(Node *root) {
+		queue<pair<int, Node*>> q ;
+		map<int, int>mapping ;
+		q.push({0, root});
+		while (!q.empty()) {
+			int line = q.front().first ;
+			Node* node = q.front().second;
+			q.pop();
+			mapping[line] = node->data ;
+			if(node->left){
+			q.push({line - 1, node->left});
+			}
+			if(node->right){
+			q.push({line + 1, node->right});
+			}
+		}
+		vector<int>bottomView;
+		for (auto it : mapping) {
+			bottomView.push_back(it.second);
+		}
+		return bottomView;
+	}
+};
