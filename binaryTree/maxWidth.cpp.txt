@@ -1,0 +1,44 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        if(root == nullptr)return 0 ;
+        queue<pair<TreeNode*,int>>levelOrder ; // node, index 
+        // 0 based - i-parent , left - 2i+1, right - 2i+2
+        levelOrder.push({root,0});
+        int width = 0;
+        while(!levelOrder.empty()){
+            int minIndex = levelOrder.front().second;
+            int size = levelOrder.size();
+            int first = 0 ; 
+            int last = 0 ;
+            for(int i = 0 ; i < size ; i++){
+                // to avoid overflow substract by minIndex of that level
+              long long currId= levelOrder.front().second-minIndex;
+              TreeNode* currNode = levelOrder.front().first;
+              levelOrder.pop();
+              if(i == 0)first = currId;
+              if(i == size-1) last = currId;
+              if(currNode->left){
+                levelOrder.push({currNode->left,2*currId+1});
+              }
+               if(currNode->right){
+                levelOrder.push({currNode->right,2*currId+2});
+              }
+            }
+            ///width = last-first+1
+            width = max(width,last-first +1);
+        }
+        return width ;
+    }
+};
