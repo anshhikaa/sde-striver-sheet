@@ -1,0 +1,19 @@
+class Solution {
+public:
+int diameter = 0  ;
+int dfs(TreeNode* node){
+    if(node == nullptr){
+        return 0;
+    } 
+    int leftHeight = dfs(node->left);
+    int rightHeight =dfs(node->right);
+    //calculate the length of longest path passing through this node
+    diameter = max(diameter, leftHeight+rightHeight);
+    return 1+max(leftHeight,rightHeight);
+}
+    int diameterOfBinaryTree(TreeNode* root) {
+        if(!root)return 0 ;
+        dfs(root);
+        return diameter;
+    }
+};
