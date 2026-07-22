@@ -1,0 +1,38 @@
+//brute force solution  - o(n),o(h) - global variable depth 
+class Solution {
+public:
+void dfs(TreeNode* node , int &depth , int currdepth){
+    if(node->left == nullptr && node->right== nullptr){
+        depth = max(depth,currdepth);
+        return ;
+    }
+    if(node->left){
+        dfs(node->left,depth,currdepth+1);
+    }
+   if(node->right){
+    dfs(node->right,depth,currdepth+1);
+   }
+}
+    int maxDepth(TreeNode* root) {
+        int depth = 0 ;
+        if(!root)return depth ;
+        dfs(root,depth,1);
+        return depth ;
+    }
+};
+//optimized solution - bottom up recursion
+class Solution {
+public:
+int dfs(TreeNode* node){
+    if(node == nullptr){
+        return 0 ;
+    }
+    int leftHeight = dfs(node->left);
+    int rightHeight = dfs(node->right);
+    return 1 + max(leftHeight , rightHeight);
+}
+    int maxDepth(TreeNode* root) {
+        int depth = dfs(root);
+        return depth ;
+    }
+};
