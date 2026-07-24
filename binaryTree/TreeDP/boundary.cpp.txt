@@ -1,0 +1,60 @@
+class Solution {
+  public:
+  void leafBoundary(Node* node , vector<int>&ans){
+      if(!node)return ;
+      //leaf condition
+      if(node->left == nullptr && node->right == nullptr){
+          ans.push_back(node->data);
+          return ;
+      }
+      if(node->left) leafBoundary(node->left,ans);
+      if(node->right) leafBoundary(node->right,ans);
+  }
+  void rightBoundary(Node*node , vector<int>&ans){
+      if(!node)return ;
+      //skipping leaf nodes
+      if(node->left == nullptr && node->right == nullptr){
+          return ;
+      }
+      if(node->right){
+          rightBoundary(node->right,ans);
+      }
+      else{
+      if(node->left){
+          rightBoundary(node->left,ans);
+      }
+      }
+      ans.push_back(node->data);
+  }
+  void leftBoundary(Node*node , vector<int>&ans){
+      if(!node)return;
+      //skipping leaf node
+      if(node->left == nullptr && node->right == nullptr){
+          return ;
+      }
+       ans.push_back(node->data);
+      if(node->left){
+          leftBoundary(node->left,ans);
+      }
+      else{
+      if(node->right){
+          leftBoundary(node->right,ans);
+      }
+      }
+  }
+    vector<int> boundaryTraversal(Node *root) {
+        vector<int>ans ; 
+        //root is not leaf
+        if(root->left != nullptr || root->right != nullptr){
+               ans.push_back(root->data);
+        }
+    //traverse left boundary
+        leftBoundary(root->left,ans);
+    //traverse leaves
+        leafBoundary(root,ans);
+    //traverse right boundary
+        rightBoundary(root->right,ans);
+    return ans ;
+        
+    }
+};
