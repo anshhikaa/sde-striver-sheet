@@ -1,0 +1,75 @@
+//recursion
+class Solution {
+	public:
+	int recursion(int i, int W, vector<int> &val, vector<int> &wt) {
+		if (i == wt.size()-1) {
+			if (wt[i] <= W)
+				return val[i];
+			else
+				return 0 ;
+		}
+		
+		// not take
+		int notTake = 0 + recursion(i + 1, W, val, wt);
+		// take
+		int take = -1;
+		if (wt[i] <= W) {
+			take = val[i] + recursion(i + 1, W - wt[i], val, wt);
+		}
+		return max(take, notTake);
+	}
+	int knapsack(int W, vector<int> &val, vector<int> &wt) {
+		return recursion(0, W, val, wt);
+	}
+};
+// memoziation 
+class Solution {
+	public:
+	int recursion(int i, int W, vector<int> &val, vector<int> &wt,vector<vector<int>>&dp) {
+		if (i == wt.size()-1) {
+			if (wt[i] <= W)
+				return val[i];
+			else
+				return 0 ;
+		}
+		//memoziation
+		if(dp[i][W] != -1){
+		    return dp[i][W];
+		}
+		// not take
+		int notTake = 0 + recursion(i + 1, W, val, wt,dp);
+		// take
+		int take = -1;
+		if (wt[i] <= W) {
+			take = val[i] + recursion(i + 1, W - wt[i], val, wt,dp);
+		}
+		return dp[i][W] = max(take, notTake);
+	}
+	int knapsack(int W, vector<int> &val, vector<int> &wt) {
+	    int n = val.size();
+	    vector<vector<int>>dp(n,vector<int>(W+1,-1));
+		return recursion(0, W, val, wt,dp);
+	}
+};
+//tabulation
+class Solution {
+  public:
+    int knapsack(int W, vector<int> &val, vector<int> &wt) {
+        int n = val.size();
+        vector<vector<int>>dp(n+1,vector<int>(W+1,0));
+        for(int i = 1 ; i <= n ; i++){
+            for(int w = 0 ; w <= W ; w++){
+                //not take - take prev row val 
+                int notTake = dp[i-1][w];
+                //take - curr best + best val with the remaining weight from prev items
+                int take = INT_MIN;
+                if(wt[i-1] <= w){
+                    take = val[i-1] + dp[i-1][w-wt[i-1]];
+                }
+                dp[i][w]= max(take,notTake);
+            }
+        }
+        return dp[n][W];
+    }
+};
+
